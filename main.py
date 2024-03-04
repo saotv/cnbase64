@@ -11,7 +11,10 @@ base85_to_hexagrams = {
     'W': '䷠', 'X': '䷡', 'Y': '䷢', 'Z': '䷣', 'a': '䷤', 'b': '䷥', 'c': '䷦', 'd': '䷧',
     'e': '䷨', 'f': '䷩', 'g': '䷪', 'h': '䷫', 'i': '䷬', 'j': '䷭', 'k': '䷮', 'l': '䷯',
     'm': '䷰', 'n': '䷱', 'o': '䷲', 'p': '䷳', 'q': '䷴', 'r': '䷵', 's': '䷶', 't': '䷷',
-    'u': '䷸', 'v': '䷹', 'w': '䷺', 'x': '䷻', 'y': '䷼', 'z': '䷽'
+    'u': '䷸', 'v': '䷹', 'w': '䷺', 'x': '䷻', 'y': '䷼', 'z': '䷽', '!': '䷾', '#': '䷿',
+    '$': '䷀', '%': '䷁', '&': '䷂', '(': '䷃', ')': '䷄', '*': '䷅', '+': '䷆', '-': '䷇',
+    ';': '䷈', '<': '䷉', '=': '䷊', '>': '䷋', '?': '䷌', '@': '䷍', '^': '䷎', '_': '䷏',
+    '`': '䷐', '{': '䷑', '|': '䷒', '}': '䷓', '~': '䷔'
 }
 
 # Reverse mapping for decoding
@@ -23,14 +26,14 @@ def encode_to_hexagrams(text):
         compressed_text = zlib.compress(text.encode('utf-8'))
         encoded_text = base64.b85encode(compressed_text).decode('utf-8')
         # Replace Base85 characters with I Ching hexagrams
-        return ''.join(base85_to_hexagrams.get(char, char) for char in encoded_text)
+        return ''.join(base85_to_hexagrams[char] for char in encoded_text)  # Use direct mapping
     except Exception as e:
         return f"Error encoding text: {e}"
 
 def decode_from_hexagrams(hexagram_str):
     try:
         # Replace I Ching hexagrams with Base85 characters
-        base85_str = ''.join(hexagrams_to_base85.get(char, char) for char in hexagram_str)
+        base85_str = ''.join(hexagrams_to_base85[char] for char in hexagram_str)  # Use direct mapping
         # Decode Base85 and decompress
         decompressed_data = zlib.decompress(base64.b85decode(base85_str))
         return decompressed_data.decode('utf-8')
