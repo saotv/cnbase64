@@ -10,16 +10,16 @@ base64_to_hexagrams = {
     'g': '䷠', 'h': '䷡', 'i': '䷢', 'j': '䷣', 'k': '䷤', 'l': '䷥', 'm': '䷦', 'n': '䷧',
     'o': '䷨', 'p': '䷩', 'q': '䷪', 'r': '䷫', 's': '䷬', 't': '䷭', 'u': '䷮', 'v': '䷯',
     'w': '䷰', 'x': '䷱', 'y': '䷲', 'z': '䷳', '0': '䷴', '1': '䷵', '2': '䷶', '3': '䷷',
-    '4': '䷸', '5': '䷹', '6': '䷺', '7': '䷻', '8': '䷼', '9': '䷽', '+': '䷾', '/': '䷿',
-    '=': ' '  # Handling padding character for Base64
+    '4': '䷸', '5': '䷹', '6': '䷺', '7': '䷻', '8': '䷼', '9': '䷽', '+': '䷾', '/': '䷿'
+    # Padding character '=' is not included in the mapping
 }
 
 hexagrams_to_base64 = {v: k for k, v in base64_to_hexagrams.items()}
 
 def encode_to_hexagrams(text):
     try:
-        # Encode text to Base64
-        encoded_text = base64.b64encode(text.encode('utf-8')).decode('utf-8')
+        # Encode text to Base64 and remove padding
+        encoded_text = base64.b64encode(text.encode('utf-8')).decode('utf-8').rstrip('=')
         # Replace Base64 characters with I Ching hexagrams
         return ''.join(base64_to_hexagrams.get(char, char) for char in encoded_text)
     except Exception as e:
@@ -29,6 +29,10 @@ def decode_from_hexagrams(hexagram_str):
     try:
         # Replace I Ching hexagrams with Base64 characters
         base64_str = ''.join(hexagrams_to_base64.get(char, char) for char in hexagram_str)
+        # Add padding if necessary
+        missing_padding = len(base64_str) % 4
+        if missing_padding:
+            base64_str += '=' * (4 - missing_padding)
         # Decode Base64 to text
         return base64.b64decode(base64_str).decode('utf-8')
     except Exception as e:
