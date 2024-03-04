@@ -19,10 +19,10 @@ reverse_hexagram_map = {v: k for k, v in hexagram_map.items()}
 
 def encode_to_hexagrams(input_string):
     encoded_bytes = base64.b64encode(input_string.encode('utf-8'))
-    encoded_str = encoded_bytes.decode('utf-8')
+    encoded_str = encoded_bytes.decode('utf-8').rstrip('=')  # Strip padding characters
     encoded_hexagrams = ''.join(hexagram_map.get(character, '?') for character in encoded_str)
     return encoded_hexagrams
-
+    
 def decode_from_hexagrams(input_hexagrams):
     base64_str = ''.join(reverse_hexagram_map.get(hexagram, '?') for hexagram in input_hexagrams)
     try:
