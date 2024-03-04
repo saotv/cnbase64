@@ -43,13 +43,13 @@ def decode_from_hexagrams(hexagram_str):
 st.title('I Ching Encoder/Decoder(易经64封编解码)')
 
 # Encoding
-text_to_encode = st.text_area("Text to encode:")
+text_to_encode = st.text_area("Text to encode(编码/加密):")
 if st.button('Encode'):
     encoded_message = encode_to_hexagrams(text_to_encode)
     st.text_area("Encoded hexagrams:", encoded_message, height=150)
 
 # Decoding
-hexagrams_to_decode = st.text_area("Hexagrams to decode:")
+hexagrams_to_decode = st.text_area("Hexagrams to decode(解码/解密):")
 if st.button('Decode'):
     decoded_message = decode_from_hexagrams(hexagrams_to_decode)
     st.text_area("Decoded text:", decoded_message, height=150)
