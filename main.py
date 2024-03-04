@@ -1,6 +1,5 @@
 import streamlit as st
 import base64
-import zlib
 
 # Mapping for Base64 characters to I Ching hexagrams
 base64_to_hexagrams = {
@@ -20,9 +19,8 @@ hexagrams_to_base64 = {v: k for k, v in base64_to_hexagrams.items()}
 
 def encode_to_hexagrams(text):
     try:
-        # Compress text and convert to Base64
-        compressed_text = zlib.compress(text.encode('utf-8'))
-        encoded_text = base64.b64encode(compressed_text).decode('utf-8').rstrip('=')
+        # Convert to Base64
+        encoded_text = base64.b64encode(text.encode('utf-8')).decode('utf-8').rstrip('=')
         # Replace Base64 characters with I Ching hexagrams
         return ''.join(base64_to_hexagrams[char] for char in encoded_text if char in base64_to_hexagrams)
     except Exception as e:
@@ -36,14 +34,13 @@ def decode_from_hexagrams(hexagram_str):
         missing_padding = len(base64_str) % 4
         if missing_padding:
             base64_str += '=' * (4 - missing_padding)
-        # Decode Base64 and decompress
-        decompressed_data = zlib.decompress(base64.b64decode(base64_str))
-        return decompressed_data.decode('utf-8')
+        # Decode Base64
+        return base64.b64decode(base64_str).decode('utf-8')
     except Exception as e:
         return f"Error decoding hexagrams: {e}"
 
 # Streamlit interface
-st.title('I Ching Encoder/Decoder with Compression')
+st.title('I Ching Encoder/Decoder')
 
 # Encoding
 text_to_encode = st.text_area("Text to encode:")
