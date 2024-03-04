@@ -40,7 +40,7 @@ def decode_from_hexagrams(hexagram_str):
         return f"Error decoding hexagrams: {e}"
 
 # Streamlit interface
-st.title('I Ching Encoder/Decoder(易经64封编解码)')
+st.title('I Ching Encoder/Decoder \n 易经64封编解码（八卦版base64）')
 
 # Encoding
 text_to_encode = st.text_area("Text to encode(编码/加密):")
