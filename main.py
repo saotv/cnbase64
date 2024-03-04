@@ -22,7 +22,7 @@ def encode_to_hexagrams(text):
     try:
         # Compress text and convert to Base64
         compressed_text = zlib.compress(text.encode('utf-8'))
-        encoded_text = base64.b64encode(compressed_text).decode('utf-8')
+        encoded_text = base64.b64encode(compressed_text).decode('utf-8').rstrip('=')
         # Replace Base64 characters with I Ching hexagrams
         return ''.join(base64_to_hexagrams[char] for char in encoded_text if char in base64_to_hexagrams)
     except Exception as e:
@@ -32,6 +32,10 @@ def decode_from_hexagrams(hexagram_str):
     try:
         # Replace I Ching hexagrams with Base64 characters
         base64_str = ''.join(hexagrams_to_base64[char] for char in hexagram_str if char in hexagrams_to_base64)
+        # Add padding if necessary
+        missing_padding = len(base64_str) % 4
+        if missing_padding:
+            base64_str += '=' * (4 - missing_padding)
         # Decode Base64 and decompress
         decompressed_data = zlib.decompress(base64.b64decode(base64_str))
         return decompressed_data.decode('utf-8')
